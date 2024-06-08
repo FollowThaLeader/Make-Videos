@@ -1,27 +1,35 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const enableNotificationsButton = document.getElementById('enableNotifications');
-  const sendNotificationButton = document.getElementById('sendNotification');
+document.addEventListener('DOMContentLoaded', function () {
+  const enableNotificationsBtn = document.getElementById('enableNotifications');
+  const sendNotificationBtn = document.getElementById('sendNotification');
 
-  enableNotificationsButton.addEventListener('click', requestNotificationPermission);
-  sendNotificationButton.addEventListener('click', sendNotification);
+  let notificationsEnabled = false;
 
-  function requestNotificationPermission() {
-    Notification.requestPermission().then(function(result) {
-      if (result === 'granted') {
-        console.log('Notification permission granted.');
+  // Function to enable notifications
+  enableNotificationsBtn.addEventListener('click', function () {
+    if (!notificationsEnabled) {
+      if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === 'granted') {
+            notificationsEnabled = true;
+            alert('Notifications enabled!');
+          }
+        });
       } else {
-        console.log('Notification permission denied.');
+        alert('Notification permission has been denied. Please enable it in your browser settings.');
       }
-    });
-  }
+    } else {
+      alert('Notifications are already enabled.');
+    }
+  });
 
-  function sendNotification() {
-    if (Notification.permission === 'granted') {
-      new Notification('New notification from your website!', {
-        body: 'This is a notification from your website.'
+  // Function to send notification
+  sendNotificationBtn.addEventListener('click', function () {
+    if (notificationsEnabled) {
+      new Notification('New Notification', {
+        body: 'This is a test notification!'
       });
     } else {
-      console.error('Notification permission not granted.');
+      alert('Please enable notifications first.');
     }
-  }
+  });
 });
