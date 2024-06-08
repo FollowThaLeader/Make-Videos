@@ -22,9 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to send notification
   sendNotificationBtn.addEventListener('click', function () {
     if (notificationsEnabled) {
-      new Notification('New Notification', {
-        body: 'This is a test notification!'
-      });
+      if (Notification.permission === 'granted') {
+        new Notification('New Notification', {
+          body: 'This is a test notification!'
+        });
+      } else {
+        alert('Please enable notifications first.');
+      }
     } else {
       alert('Please enable notifications first.');
     }
