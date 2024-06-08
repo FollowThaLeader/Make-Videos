@@ -6,18 +6,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to enable notifications
   enableNotificationsBtn.addEventListener('click', function () {
-    if (!notificationsEnabled) {
-      if (Notification.permission !== 'denied') {
-        Notification.requestPermission().then(function (permission) {
-          if (permission === 'granted') {
-            notificationsEnabled = true;
-            alert('Notifications enabled!');
-          }
-        });
-      } else {
-        alert('Notification permission has been denied. Please enable it in your browser settings.');
-      }
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          notificationsEnabled = true;
+          alert('Notifications enabled!');
+        }
+      });
     } else {
+      notificationsEnabled = true;
       alert('Notifications are already enabled.');
     }
   });
